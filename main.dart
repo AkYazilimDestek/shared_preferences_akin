@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'SecondRoute.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(App());
@@ -24,16 +23,16 @@ class _Vucut extends StatefulWidget {
 }
 
 class _VucutState extends State<_Vucut> {
-
   Future<void> _fonlsiyonadi() async {
-     var sharedPreferences = await SharedPreferences.getInstance();
-     sharedPreferences.setString("GELENID", "182");
-     Navigator.push(
-       context,
-       MaterialPageRoute(builder: (context) => const SecondRoute()),
-     );
-  }
+   var sharedPreferences = await SharedPreferences.getInstance();
+   sharedPreferences.setString("GELENID", "182");
 
+   Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SecondRoute()),
+    );
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,15 +40,47 @@ class _VucutState extends State<_Vucut> {
         title: Text("shared_preferences"),
       ),
       body : Center(
-        child :  RaisedButton(
+        child : ElevatedButton(
           onPressed: _fonlsiyonadi, // bir fonksiyon tetikler
-          textColor: Colors.white, // Yazı rengi
-          color: Colors.green,
-          padding: const EdgeInsets.all(0.0), // içten boşluk
-          child: Text('BUTTON'), // Buton üzerindeki yazıyı belirler
+          child: Text('GİT'), // Buton üzerindeki yazıyı belirler
         ),
       ),
     );
   }
 }
 
+
+class SecondRoute extends StatefulWidget {
+  const SecondRoute({Key? key}) : super(key: key);
+
+  @override
+  State<SecondRoute> createState() => _SecondRouteState();
+}
+
+class _SecondRouteState extends State<SecondRoute> {
+  late String GelenID;
+  Future<void> MusteriID_Getir() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      GelenID = sharedPreferences.getString("GELENID") ?? "";
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    MusteriID_Getir();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("EXZAMPLE"),
+      ),
+      body:  Center(
+        child: Text(GelenID,style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),),
+      ),
+    );
+  }
+}
